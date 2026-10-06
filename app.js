@@ -1,1 +1,59 @@
-const state={temp:27.4,humidity:61,air:42,noise:48,light:620};const history=[78,80,79,81,80,83,82,84,81,82,83,82];const $=id=>document.getElementById(id);function clamp(v,min,max){return Math.max(min,Math.min(max,v))}function componentScores(){return{t:100-clamp(Math.abs(state.temp-24)*8,0,100),h:100-clamp(Math.abs(state.humidity-50)*2,0,100),a:100-clamp(state.air,0,100),n:100-clamp((state.noise-30)*2,0,100),l:100-clamp(Math.abs(state.light-600)/6,0,100)}}function healthScore(){const s=componentScores();return Math.round(s.t*.20+s.h*.15+s.a*.35+s.n*.20+s.l*.10)}function render(){const score=healthScore();$('score').textContent=score;$('scoreRing').style.background='conic-gradient(var(--accent) '+score+'%,#1b3044 0)';$('scoreLabel').textContent=score>=75?'Healthy':score>=50?'Moderate':'Needs Attention';$('temp').textContent=state.temp.toFixed(1)+'°C';$('humidity').textContent=Math.round(state.humidity)+'%';$('air').textContent=Math.round(state.air)+' AQI';$('noise').textContent=Math.round(state.noise)+' dB';$('light').textContent=Math.round(state.light)+' lux';$('tempState').textContent=state.temp<20?'Cool':state.temp<=28?'Comfortable':'Warm';$('humidityState').textContent=state.humidity>=35&&state.humidity<=65?'Good':'High/Low';$('airState').textContent=state.air<=50?'Good':state.air<=100?'Moderate':'Poor';$('noiseState').textContent=state.noise<55?'Quiet':state.noise<70?'Busy':'Loud';$('lightState').textContent=state.light<250?'Dim':state.light<800?'Bright':'Very bright';$('recommendation').textContent=score>=75?'Conditions are currently comfortable.':score>=50?'Conditions are acceptable, but could be improved.':'Environmental conditions need attention.';$('recommendationText').textContent=state.air>100?'Air quality is the main concern. Improve ventilation and reduce nearby pollution sources.':state.noise>70?'Noise is elevated. Consider a quieter space for concentration.':'Keep monitoring the environment. The current combination of readings is reasonably balanced.';$('updated').textContent='Updated '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});drawChart()}function drawChart(){const c=$('trendChart'),ctx=c.getContext('2d'),W=c.clientWidth,H=280;c.width=W*2;c.height=H*2;ctx.scale(2,2);ctx.strokeStyle='#1c334c';ctx.lineWidth=1;for(let y=20;y<=260;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}ctx.beginPath();history.forEach((v,i)=>{const x=i*(W/(history.length-1)),y=250-(v-50)/50*190;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.strokeStyle='#55e6a5';ctx.lineWidth=4;ctx.stroke();history.forEach((v,i)=>{const x=i*(W/(history.length-1)),y=250-(v-50)/50*190;ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle='#55e6a5';ctx.fill()})}function simulate(){state.temp=clamp(state.temp+(Math.random()-.5)*.35,18,35);state.humidity=clamp(state.humidity+(Math.random()-.5)*1.4,20,85);state.air=clamp(state.air+(Math.random()-.5)*5,10,180);state.noise=clamp(state.noise+(Math.random()-.5)*4,30,90);state.light=clamp(state.light+(Math.random()-.5)*35,50,1200);history.push(healthScore());if(history.length>12)history.shift();render()}window.addEventListener('resize',drawChart);render();setInterval(simulate,3000);
+const $=id=>document.getElementById(id);
+const controls={temp:$('temp'),rain:$('rain'),sun:$('sun'),plants:$('plants'),herb:$('herb'),pred:$('pred')};
+const outputs={temp:$('tempOut'),rain:$('rainOut'),sun:$('sunOut'),plants:$('plantOut'),herb:$('herbOut'),pred:$('predOut')};
+const presets={
+ balanced:{temp:24,rain:65,sun:70,plants:500,herb:80,pred:12},
+ drought:{temp:28,rain:25,sun:82,plants:500,herb:80,pred:12},
+ warming:{temp:34,rain:55,sun:72,plants:500,herb:80,pred:12},
+ predators:{temp:24,rain:65,sun:70,plants:500,herb:80,pred:0}
+};
+let lastResult=null, log=[];
+function sync(){outputs.temp.textContent=controls.temp.value+'°C';outputs.rain.textContent=controls.rain.value+'%';outputs.sun.textContent=controls.sun.value+'%';outputs.plants.textContent=controls.plants.value;outputs.herb.textContent=controls.herb.value;outputs.pred.textContent=controls.pred.value}
+Object.values(controls).forEach(x=>x.addEventListener('input',sync));
+document.querySelectorAll('.preset').forEach(btn=>btn.addEventListener('click',()=>{const p=presets[btn.dataset.preset];Object.keys(p).forEach(k=>controls[k].value=p[k]);document.querySelectorAll('.preset').forEach(b=>b.classList.remove('active'));btn.classList.add('active');sync()}));
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function simulate(){
+ const c={temp:+controls.temp.value,rain:+controls.rain.value,sun:+controls.sun.value,plants:+controls.plants.value,herb:+controls.herb.value,pred:+controls.pred.value};
+ let P=c.plants,H=c.herb,R=c.pred;const data=[{P,H,R}];
+ for(let day=1;day<=100;day++){
+   const climate=clamp(1-Math.abs(c.temp-24)/22,0,1)*.55+(c.rain/100)*.25+(c.sun/100)*.20;
+   const plantGrowth=.11*climate*P*(1-P/1000);
+   const herbFood=.00042*P*H;
+   const predation=.0018*H*R;
+   const plantLoss=.00022*P*H;
+   P=clamp(P+plantGrowth-plantLoss,1,1200);
+   H=clamp(H+.00075*herbFood-.018*H-predation*.18,0,400);
+   R=clamp(R+.006*predation-.025*R,0,100);
+   data.push({P,H,R});
+ }
+ const final=data[100],avgP=data.reduce((a,x)=>a+x.P,0)/data.length,avgH=data.reduce((a,x)=>a+x.H,0)/data.length,avgR=data.reduce((a,x)=>a+x.R,0)/data.length;
+ const swing=(Math.max(...data.map(x=>x.P))-Math.min(...data.map(x=>x.P)))/Math.max(avgP,1);
+ const survival=(final.P>20?35:10)+(final.H>5?35:10)+(c.pred===0?15:(final.R>1?20:5));
+ const stability=Math.round(clamp(survival-(swing*20),0,100));
+ return {data,final,stability,c};
+}
+function draw(result){
+ const canvas=$('chart'),ctx=canvas.getContext('2d'),W=canvas.clientWidth,H=360,dpr=devicePixelRatio||1;canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+ ctx.clearRect(0,0,W,H);ctx.strokeStyle='#244336';ctx.lineWidth=1;
+ for(let i=0;i<5;i++){const y=30+i*(H-65)/4;ctx.beginPath();ctx.moveTo(45,y);ctx.lineTo(W-15,y);ctx.stroke()}
+ const max=Math.max(...result.data.flatMap(x=>[x.P,x.H*4,x.R*8]),100);
+ const series=[['P','#65e6a2',x=>x.P],['H','#e7d77a',x=>x.H*4],['R','#ef8d8d',x=>x.R*8]];
+ series.forEach(([key,color,fn])=>{ctx.beginPath();result.data.forEach((x,i)=>{const px=45+i*(W-60)/100,py=H-35-(fn(x)/max)*(H-70);i?ctx.lineTo(px,py):ctx.moveTo(px,py)});ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke()});
+ ctx.fillStyle='#718c7d';ctx.font='10px Segoe UI';ctx.fillText('Day 0',45,H-14);ctx.fillText('Day 100',W-58,H-14);
+}
+function update(result){
+ $('dayHero').textContent='100';$('plantNow').textContent=Math.round(result.final.P);$('herbNow').textContent=Math.round(result.final.H);$('predNow').textContent=Math.round(result.final.R);$('stability').textContent=result.stability+'%';
+ $('stabilityText').textContent=result.stability>=70?'stable':result.stability>=45?'under pressure':'unstable';
+ $('resultTag').textContent='COMPLETE';
+ let title='A balanced ecosystem',text='Populations remain viable under these conditions.';
+ if(result.c.rain<40){title='Rainfall is the pressure point';text='Low rainfall reduces plant growth. Herbivores then lose food, showing how a climate change can propagate through a food web.'}
+ else if(result.c.temp>30){title='Heat is stressing the system';text='The model moves conditions away from the plant temperature optimum. Lower plant growth eventually affects consumers.'}
+ else if(result.c.pred===0){title='Removing predators changes the food web';text='Without predators, herbivores face less pressure. Their increase can intensify plant consumption and destabilize the system.'}
+ else if(result.stability>=75){title='A resilient food web';text='The populations fluctuate but remain connected by feedback loops between resources, consumers and predators.'}
+ $('insightTitle').textContent=title;$('insightText').textContent=text;draw(result);
+}
+function run(){lastResult=simulate();update(lastResult);addLog(lastResult)}
+function addLog(r){const item={time:new Date().toLocaleString(),stability:r.stability,P:Math.round(r.final.P),H:Math.round(r.final.H),R:Math.round(r.final.R),hyp:$('hypothesis').value.trim()};log.unshift(item);renderLog()}
+function renderLog(){$('log').innerHTML=log.length?log.map(x=>'<div class="log-item"><div class="date">'+x.time+'</div><div><strong>Plants '+x.P+' · Herbivores '+x.H+' · Predators '+x.R+'</strong><span>'+((x.hyp)||'No hypothesis recorded')+'</span></div><b>'+x.stability+'%</b></div>').join(''):'<div class="empty">No experiments recorded yet. Run a simulation to create your first result.</div>'}
+$('runBtn').addEventListener('click',run);$('resetBtn').addEventListener('click',()=>{Object.keys(presets.balanced).forEach(k=>controls[k].value=presets.balanced[k]);document.querySelectorAll('.preset').forEach(b=>b.classList.toggle('active',b.dataset.preset==='balanced'));sync();lastResult=null;$('dayHero').textContent='0';$('resultTag').textContent='READY'});
+$('saveBtn').addEventListener('click',()=>{if(lastResult)addLog(lastResult);else alert('Run an experiment first.')});$('clearLog').addEventListener('click',()=>{log=[];renderLog()});window.addEventListener('resize',()=>{if(lastResult)draw(lastResult)});sync();renderLog();
