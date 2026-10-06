@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f"><title>EcoSense | Environmental Intelligence</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><div class="brand"><div class="brand-mark">ES</div><div><h1>EcoSense</h1><p>Environmental Intelligence System</p></div></div><div class="status"><span class="pulse"></span><span>Simulation Mode</span></div></header>
+<main class="container">
+<section class="hero"><div><span class="eyebrow">SCIENCE PROJECT • LIVE MONITORING</span><h2>Understand your environment at a glance.</h2><p>EcoSense combines sensor readings into a simple Environmental Health Index and explains what the data means.</p></div><div class="score-card"><div class="score-ring" id="scoreRing"><span id="score">82</span><small>/100</small></div><div><strong id="scoreLabel">Healthy</strong><p>Environmental Health</p></div></div></section>
+<section class="metrics">
+<article class="metric"><span class="metric-icon">🌡️</span><div><span>Temperature</span><strong id="temp">27.4°C</strong></div><em id="tempState">Comfortable</em></article>
+<article class="metric"><span class="metric-icon">💧</span><div><span>Humidity</span><strong id="humidity">61%</strong></div><em id="humidityState">Good</em></article>
+<article class="metric"><span class="metric-icon">🌫️</span><div><span>Air Quality</span><strong id="air">42 AQI</strong></div><em id="airState">Good</em></article>
+<article class="metric"><span class="metric-icon">🔊</span><div><span>Noise</span><strong id="noise">48 dB</strong></div><em id="noiseState">Quiet</em></article>
+<article class="metric"><span class="metric-icon">💡</span><div><span>Light</span><strong id="light">620 lux</strong></div><em id="lightState">Bright</em></article>
+</section>
+<section class="grid">
+<article class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">TREND</span><h3>Environmental score</h3></div><span class="live-tag">● LIVE</span></div><canvas id="trendChart" aria-label="Environmental score trend"></canvas></article>
+<article class="panel"><div class="panel-head"><div><span class="eyebrow">SCIENCE</span><h3>How the score works</h3></div></div><div class="formula"><div><b>Temperature</b><span>20%</span></div><div><b>Humidity</b><span>15%</span></div><div><b>Air quality</b><span>35%</span></div><div><b>Noise</b><span>20%</span></div><div><b>Light</b><span>10%</span></div></div><p class="note">The index is an educational project model, not a medical, industrial, or regulatory measurement.</p></article>
+</section>
+<section class="panel recommendation"><div class="recommend-icon">✦</div><div><span class="eyebrow">ECO ADVISOR</span><h3 id="recommendation">Conditions are currently comfortable.</h3><p id="recommendationText">Keep monitoring the room. A balanced environment supports a pleasant space.</p></div></section>
+<section class="panel"><div class="panel-head"><div><span class="eyebrow">PROJECT</span><h3>EcoSense science workflow</h3></div></div><div class="steps"><div><b>01</b><span>Sense</span><p>Arduino reads environmental sensors.</p></div><div><b>02</b><span>Process</span><p>Readings are normalized into component scores.</p></div><div><b>03</b><span>Combine</span><p>Weighted values produce one health index.</p></div><div><b>04</b><span>Explain</span><p>Dashboard turns numbers into useful advice.</p></div></div></section>
+</main><footer>EcoSense • Science + Hardware + Software • <span id="updated">Updated now</span></footer>
+<script src="app.js"></script>
+</body></html>
