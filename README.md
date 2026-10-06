@@ -1,37 +1,43 @@
-# 🌱 EcoSense
+# 🧬 BioSim — Virtual Ecosystem Laboratory
 
-**Smart Environmental Monitoring and Health Index System**
+BioSim is a browser-only science project that lets students run simplified ecosystem experiments without Arduino, sensors, or other hardware.
 
-EcoSense is a science + hardware + software project that turns environmental sensor readings into an easy-to-understand **Environmental Health Index (0–100)**.
+## What it simulates
 
-## Current version
+- 🌱 Plant growth
+- 🐇 Herbivore population
+- 🦊 Predator population
+- 🌡️ Temperature pressure
+- 🌧️ Rainfall
+- ☀️ Sunlight
+- 📊 Population dynamics
+- 🧪 Hypotheses and experiment history
 
-The GitHub dashboard starts in **Simulation Mode**, so it works immediately without hardware. Values change automatically every few seconds and the score/trend update live.
+## The science
 
-### Measurements
-- 🌡️ Temperature
-- 💧 Humidity
-- 🌫️ Air quality
-- 🔊 Noise
-- 💡 Light
+The simulation uses simplified mathematical relationships inspired by ecological population models. Plant growth depends on resources and climate. Herbivores depend on plants. Predators depend on herbivores. These dependencies create feedback loops.
 
-### Science model
+The project also calculates an educational **stability score** from survival and population fluctuation.
 
-The educational index combines weighted component scores:
+This is a learning model, not a validated ecological forecasting system.
 
-| Factor | Weight |
-|---|---:|
-| Temperature | 20% |
-| Humidity | 15% |
-| Air quality | 35% |
-| Noise | 20% |
-| Light | 10% |
+## Experiments to try
 
-> This is a student-project model and is not intended to replace certified environmental or medical measurements.
+1. Run **Balanced**.
+2. Run **Drought** and compare plant and herbivore populations.
+3. Run **Warming** and observe the effect of temperature stress.
+4. Run **No predators** and observe the food-web response.
+5. Write a hypothesis before each experiment.
 
-## Hardware roadmap
+## Technology
 
-The `arduino/EcoSense.ino` file contains the starter Arduino firmware. The next version can connect real sensors and replace simulation data with live readings.
+- HTML
+- CSS
+- JavaScript
+- Canvas API
+- GitHub Pages
+
+No Arduino. No sensors. No external database. No external API.
 
 ## Project structure
 
@@ -40,14 +46,11 @@ EcoSense/
 ├── index.html
 ├── style.css
 ├── app.js
-├── data/
-│   └── sample-data.json
-└── arduino/
-    └── EcoSense.ino
+└── README.md
 ```
 
-## Goal
+The repository name remains **EcoSense** so your existing GitHub project URL does not change, but the application itself has been replaced by BioSim.
 
-Build a low-cost environmental station that **senses → processes → combines → explains** environmental conditions.
+## Educational objective
 
-Made for science exhibitions, college projects, and experimentation.
+BioSim demonstrates how changing one environmental variable can create a chain reaction across a food web. It turns ecological concepts into an interactive experiment students can repeat and compare.
