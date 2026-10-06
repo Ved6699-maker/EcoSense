@@ -9,81 +9,34 @@
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><div class="logo">BIO</div><div><strong>BioSim</strong><span>Virtual Ecosystem Laboratory</span></div></div>
+  <div class="brand"><div class="logo" aria-label="BioSim logo"><svg viewBox="0 0 48 48" role="img"><circle cx="24" cy="24" r="21"></circle><path d="M15 29c8-1 14-7 17-16 3 8 1 17-6 21-5 3-9 1-11-5Z"></path><path d="M16 33c5-7 9-12 16-17"></path></svg></div><div><strong>BioSim</strong><span>Virtual Ecosystem Laboratory</span></div></div>
   <div class="top-status"><i></i> Browser simulation</div>
 </header>
-
 <main>
 <section class="hero">
-  <div>
-    <p class="kicker">SCIENCE • MATHEMATICAL MODEL • EXPERIMENT</p>
-    <h1>Change the ecosystem.<br><em>Watch the science happen.</em></h1>
-    <p class="hero-copy">Explore predator–prey dynamics, plant growth and climate pressure without any hardware. Adjust the environment, run the model, and investigate what happens over 100 days.</p>
-  </div>
+  <div><p class="kicker">SCIENCE • MATHEMATICAL MODEL • EXPERIMENT</p><h1>Change the ecosystem.<br><em>Watch the science happen.</em></h1><p class="hero-copy">Explore predator–prey dynamics, plant growth and climate pressure without any hardware. Adjust the environment, run the model, and investigate what happens over 100 days.</p></div>
   <div class="hero-badge"><span>SIMULATION</span><b id="dayHero">0</b><small>days elapsed</small></div>
 </section>
-
 <section class="lab-grid">
   <aside class="controls panel">
     <div class="panel-title"><div><p class="kicker">EXPERIMENT SETUP</p><h2>Control the world</h2></div><button id="resetBtn" class="ghost">Reset</button></div>
-
-    <div class="preset-row">
-      <button class="preset active" data-preset="balanced">Balanced</button>
-      <button class="preset" data-preset="drought">Drought</button>
-      <button class="preset" data-preset="warming">Warming</button>
-      <button class="preset" data-preset="predators">No predators</button>
-    </div>
-
+    <div class="preset-row"><button class="preset active" data-preset="balanced">Balanced</button><button class="preset" data-preset="drought">Drought</button><button class="preset" data-preset="warming">Warming</button><button class="preset" data-preset="predators">No predators</button></div>
     <label>Temperature <output id="tempOut">24°C</output><input id="temp" type="range" min="5" max="40" value="24"></label>
     <label>Rainfall <output id="rainOut">65%</output><input id="rain" type="range" min="0" max="100" value="65"></label>
     <label>Sunlight <output id="sunOut">70%</output><input id="sun" type="range" min="0" max="100" value="70"></label>
     <label>Starting plants <output id="plantOut">500</output><input id="plants" type="range" min="100" max="900" value="500" step="10"></label>
     <label>Herbivores <output id="herbOut">80</output><input id="herb" type="range" min="10" max="180" value="80" step="5"></label>
     <label>Predators <output id="predOut">12</output><input id="pred" type="range" min="0" max="50" value="12"></label>
-
-    <button id="runBtn" class="run">▶ Run 100-day experiment</button>
-    <p class="hint">The model uses simplified ecological equations for learning. It is a simulation, not a prediction of a real ecosystem.</p>
+    <button id="runBtn" class="run">▶ Run 100-day experiment</button><p class="hint">The model uses simplified ecological equations for learning. It is a simulation, not a prediction of a real ecosystem.</p>
   </aside>
-
   <section class="results">
-    <div class="stats">
-      <article class="stat"><span>🌱 Plants</span><b id="plantNow">500</b><small>final population</small></article>
-      <article class="stat"><span>🐇 Herbivores</span><b id="herbNow">80</b><small>final population</small></article>
-      <article class="stat"><span>🦊 Predators</span><b id="predNow">12</b><small>final population</small></article>
-      <article class="stat"><span>🌍 Stability</span><b id="stability">82%</b><small id="stabilityText">balanced</small></article>
-    </div>
-
-    <article class="panel chart-panel">
-      <div class="panel-title"><div><p class="kicker">POPULATION DYNAMICS</p><h2>Ecosystem over time</h2></div><span id="resultTag" class="tag">READY</span></div>
-      <canvas id="chart"></canvas>
-      <div class="legend"><span><i class="plant-dot"></i> Plants</span><span><i class="herb-dot"></i> Herbivores</span><span><i class="pred-dot"></i> Predators</span></div>
-    </article>
-
-    <div class="lower-grid">
-      <article class="panel insight"><p class="kicker">SCIENTIST'S NOTE</p><h2 id="insightTitle">A balanced ecosystem</h2><p id="insightText">Run the experiment to see how population feedback loops create rises and falls.</p><div class="equation">growth → resources → competition → predation → recovery</div></article>
-      <article class="panel">
-        <p class="kicker">WHAT ARE YOU TESTING?</p><h2>Make a hypothesis</h2>
-        <textarea id="hypothesis" placeholder="Example: If rainfall falls, plant population will decrease and herbivores will eventually decline."></textarea>
-        <button id="saveBtn" class="ghost wide">Save hypothesis to experiment log</button>
-      </article>
-    </div>
+    <div class="stats"><article class="stat"><span>🌱 Plants</span><b id="plantNow">500</b><small>final population</small></article><article class="stat"><span>🐇 Herbivores</span><b id="herbNow">80</b><small>final population</small></article><article class="stat"><span>🦊 Predators</span><b id="predNow">12</b><small>final population</small></article><article class="stat"><span>🌍 Stability</span><b id="stability">82%</b><small id="stabilityText">balanced</small></article></div>
+    <article class="panel chart-panel"><div class="panel-title"><div><p class="kicker">POPULATION DYNAMICS</p><h2>Ecosystem over time</h2></div><span id="resultTag" class="tag">READY</span></div><canvas id="chart"></canvas><div class="legend"><span><i class="plant-dot"></i> Plants</span><span><i class="herb-dot"></i> Herbivores</span><span><i class="pred-dot"></i> Predators</span></div></article>
+    <div class="lower-grid"><article class="panel insight"><p class="kicker">SCIENTIST'S NOTE</p><h2 id="insightTitle">A balanced ecosystem</h2><p id="insightText">Run the experiment to see how population feedback loops create rises and falls.</p><div class="equation">growth → resources → competition → predation → recovery</div></article><article class="panel"><p class="kicker">WHAT ARE YOU TESTING?</p><h2>Make a hypothesis</h2><textarea id="hypothesis" placeholder="Example: If rainfall falls, plant population will decrease and herbivores will eventually decline."></textarea><button id="saveBtn" class="ghost wide">Save hypothesis to experiment log</button></article></div>
   </section>
 </section>
-
-<section class="panel log-panel">
-  <div class="panel-title"><div><p class="kicker">LAB NOTEBOOK</p><h2>Experiment history</h2></div><button id="clearLog" class="ghost">Clear</button></div>
-  <div id="log"><div class="empty">No experiments recorded yet. Run a simulation to create your first result.</div></div>
-</section>
-
-<section class="science">
-  <p class="kicker">THE SCIENCE</p><h2>Why the populations change</h2>
-  <div class="science-grid">
-    <div><b>01 · Plant growth</b><p>Plants grow according to available sunlight and rainfall, with temperature moving conditions away from an optimum.</p></div>
-    <div><b>02 · Herbivores</b><p>Herbivores increase when plant food is abundant and decrease when food becomes scarce.</p></div>
-    <div><b>03 · Predators</b><p>Predators depend on herbivores for food, creating a feedback loop between the two populations.</p></div>
-    <div><b>04 · Stability</b><p>The model compares population swings and survival to produce an educational stability score.</p></div>
-  </div>
-</section>
+<section class="panel log-panel"><div class="panel-title"><div><p class="kicker">LAB NOTEBOOK</p><h2>Experiment history</h2></div><button id="clearLog" class="ghost">Clear</button></div><div id="log"><div class="empty">No experiments recorded yet. Run a simulation to create your first result.</div></div></section>
+<section class="science"><p class="kicker">THE SCIENCE</p><h2>Why the populations change</h2><div class="science-grid"><div><b>01 · Plant growth</b><p>Plants grow according to available sunlight and rainfall, with temperature moving conditions away from an optimum.</p></div><div><b>02 · Herbivores</b><p>Herbivores increase when plant food is abundant and decrease when food becomes scarce.</p></div><div><b>03 · Predators</b><p>Predators depend on herbivores for food, creating a feedback loop between the two populations.</p></div><div><b>04 · Stability</b><p>The model compares population swings and survival to produce an educational stability score.</p></div></div></section>
 </main>
 <footer>BioSim · A browser-based science project · No Arduino or sensors required</footer>
 <script src="app.js"></script>
