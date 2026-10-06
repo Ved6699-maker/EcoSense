@@ -1,0 +1,1 @@
+{"project":"EcoSense","mode":"simulation","units":{"temperature":"°C","humidity":"%","air_quality":"AQI","noise":"dB","light":"lux"},"sample_reading":{"temperature":27.4,"humidity":61,"air_quality":42,"noise":48,"light":620}}
