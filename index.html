@@ -1,27 +1,91 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f"><title>EcoSense | Environmental Intelligence</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08140f">
+<title>BioSim — Virtual Ecosystem Laboratory</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="topbar"><div class="brand"><div class="brand-mark">ES</div><div><h1>EcoSense</h1><p>Environmental Intelligence System</p></div></div><div class="status"><span class="pulse"></span><span>Simulation Mode</span></div></header>
-<main class="container">
-<section class="hero"><div><span class="eyebrow">SCIENCE PROJECT • LIVE MONITORING</span><h2>Understand your environment at a glance.</h2><p>EcoSense combines sensor readings into a simple Environmental Health Index and explains what the data means.</p></div><div class="score-card"><div class="score-ring" id="scoreRing"><span id="score">82</span><small>/100</small></div><div><strong id="scoreLabel">Healthy</strong><p>Environmental Health</p></div></div></section>
-<section class="metrics">
-<article class="metric"><span class="metric-icon">🌡️</span><div><span>Temperature</span><strong id="temp">27.4°C</strong></div><em id="tempState">Comfortable</em></article>
-<article class="metric"><span class="metric-icon">💧</span><div><span>Humidity</span><strong id="humidity">61%</strong></div><em id="humidityState">Good</em></article>
-<article class="metric"><span class="metric-icon">🌫️</span><div><span>Air Quality</span><strong id="air">42 AQI</strong></div><em id="airState">Good</em></article>
-<article class="metric"><span class="metric-icon">🔊</span><div><span>Noise</span><strong id="noise">48 dB</strong></div><em id="noiseState">Quiet</em></article>
-<article class="metric"><span class="metric-icon">💡</span><div><span>Light</span><strong id="light">620 lux</strong></div><em id="lightState">Bright</em></article>
+<header class="topbar">
+  <div class="brand"><div class="logo">BIO</div><div><strong>BioSim</strong><span>Virtual Ecosystem Laboratory</span></div></div>
+  <div class="top-status"><i></i> Browser simulation</div>
+</header>
+
+<main>
+<section class="hero">
+  <div>
+    <p class="kicker">SCIENCE • MATHEMATICAL MODEL • EXPERIMENT</p>
+    <h1>Change the ecosystem.<br><em>Watch the science happen.</em></h1>
+    <p class="hero-copy">Explore predator–prey dynamics, plant growth and climate pressure without any hardware. Adjust the environment, run the model, and investigate what happens over 100 days.</p>
+  </div>
+  <div class="hero-badge"><span>SIMULATION</span><b id="dayHero">0</b><small>days elapsed</small></div>
 </section>
-<section class="grid">
-<article class="panel chart-panel"><div class="panel-head"><div><span class="eyebrow">TREND</span><h3>Environmental score</h3></div><span class="live-tag">● LIVE</span></div><canvas id="trendChart" aria-label="Environmental score trend"></canvas></article>
-<article class="panel"><div class="panel-head"><div><span class="eyebrow">SCIENCE</span><h3>How the score works</h3></div></div><div class="formula"><div><b>Temperature</b><span>20%</span></div><div><b>Humidity</b><span>15%</span></div><div><b>Air quality</b><span>35%</span></div><div><b>Noise</b><span>20%</span></div><div><b>Light</b><span>10%</span></div></div><p class="note">The index is an educational project model, not a medical, industrial, or regulatory measurement.</p></article>
+
+<section class="lab-grid">
+  <aside class="controls panel">
+    <div class="panel-title"><div><p class="kicker">EXPERIMENT SETUP</p><h2>Control the world</h2></div><button id="resetBtn" class="ghost">Reset</button></div>
+
+    <div class="preset-row">
+      <button class="preset active" data-preset="balanced">Balanced</button>
+      <button class="preset" data-preset="drought">Drought</button>
+      <button class="preset" data-preset="warming">Warming</button>
+      <button class="preset" data-preset="predators">No predators</button>
+    </div>
+
+    <label>Temperature <output id="tempOut">24°C</output><input id="temp" type="range" min="5" max="40" value="24"></label>
+    <label>Rainfall <output id="rainOut">65%</output><input id="rain" type="range" min="0" max="100" value="65"></label>
+    <label>Sunlight <output id="sunOut">70%</output><input id="sun" type="range" min="0" max="100" value="70"></label>
+    <label>Starting plants <output id="plantOut">500</output><input id="plants" type="range" min="100" max="900" value="500" step="10"></label>
+    <label>Herbivores <output id="herbOut">80</output><input id="herb" type="range" min="10" max="180" value="80" step="5"></label>
+    <label>Predators <output id="predOut">12</output><input id="pred" type="range" min="0" max="50" value="12"></label>
+
+    <button id="runBtn" class="run">▶ Run 100-day experiment</button>
+    <p class="hint">The model uses simplified ecological equations for learning. It is a simulation, not a prediction of a real ecosystem.</p>
+  </aside>
+
+  <section class="results">
+    <div class="stats">
+      <article class="stat"><span>🌱 Plants</span><b id="plantNow">500</b><small>final population</small></article>
+      <article class="stat"><span>🐇 Herbivores</span><b id="herbNow">80</b><small>final population</small></article>
+      <article class="stat"><span>🦊 Predators</span><b id="predNow">12</b><small>final population</small></article>
+      <article class="stat"><span>🌍 Stability</span><b id="stability">82%</b><small id="stabilityText">balanced</small></article>
+    </div>
+
+    <article class="panel chart-panel">
+      <div class="panel-title"><div><p class="kicker">POPULATION DYNAMICS</p><h2>Ecosystem over time</h2></div><span id="resultTag" class="tag">READY</span></div>
+      <canvas id="chart"></canvas>
+      <div class="legend"><span><i class="plant-dot"></i> Plants</span><span><i class="herb-dot"></i> Herbivores</span><span><i class="pred-dot"></i> Predators</span></div>
+    </article>
+
+    <div class="lower-grid">
+      <article class="panel insight"><p class="kicker">SCIENTIST'S NOTE</p><h2 id="insightTitle">A balanced ecosystem</h2><p id="insightText">Run the experiment to see how population feedback loops create rises and falls.</p><div class="equation">growth → resources → competition → predation → recovery</div></article>
+      <article class="panel">
+        <p class="kicker">WHAT ARE YOU TESTING?</p><h2>Make a hypothesis</h2>
+        <textarea id="hypothesis" placeholder="Example: If rainfall falls, plant population will decrease and herbivores will eventually decline."></textarea>
+        <button id="saveBtn" class="ghost wide">Save hypothesis to experiment log</button>
+      </article>
+    </div>
+  </section>
 </section>
-<section class="panel recommendation"><div class="recommend-icon">✦</div><div><span class="eyebrow">ECO ADVISOR</span><h3 id="recommendation">Conditions are currently comfortable.</h3><p id="recommendationText">Keep monitoring the room. A balanced environment supports a pleasant space.</p></div></section>
-<section class="panel"><div class="panel-head"><div><span class="eyebrow">PROJECT</span><h3>EcoSense science workflow</h3></div></div><div class="steps"><div><b>01</b><span>Sense</span><p>Arduino reads environmental sensors.</p></div><div><b>02</b><span>Process</span><p>Readings are normalized into component scores.</p></div><div><b>03</b><span>Combine</span><p>Weighted values produce one health index.</p></div><div><b>04</b><span>Explain</span><p>Dashboard turns numbers into useful advice.</p></div></div></section>
-</main><footer>EcoSense • Science + Hardware + Software • <span id="updated">Updated now</span></footer>
+
+<section class="panel log-panel">
+  <div class="panel-title"><div><p class="kicker">LAB NOTEBOOK</p><h2>Experiment history</h2></div><button id="clearLog" class="ghost">Clear</button></div>
+  <div id="log"><div class="empty">No experiments recorded yet. Run a simulation to create your first result.</div></div>
+</section>
+
+<section class="science">
+  <p class="kicker">THE SCIENCE</p><h2>Why the populations change</h2>
+  <div class="science-grid">
+    <div><b>01 · Plant growth</b><p>Plants grow according to available sunlight and rainfall, with temperature moving conditions away from an optimum.</p></div>
+    <div><b>02 · Herbivores</b><p>Herbivores increase when plant food is abundant and decrease when food becomes scarce.</p></div>
+    <div><b>03 · Predators</b><p>Predators depend on herbivores for food, creating a feedback loop between the two populations.</p></div>
+    <div><b>04 · Stability</b><p>The model compares population swings and survival to produce an educational stability score.</p></div>
+  </div>
+</section>
+</main>
+<footer>BioSim · A browser-based science project · No Arduino or sensors required</footer>
 <script src="app.js"></script>
-</body></html>
+</body>
+</html>
